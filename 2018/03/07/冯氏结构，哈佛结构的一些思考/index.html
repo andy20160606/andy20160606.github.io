@@ -1,0 +1,725 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>冯氏结构，哈佛结构的一些思考 | Andy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Andy">
+    
+
+    
+    <meta name="description" content="在学习计算机组成原理之前，我一直以为计算机系统结构都是冯氏结构，殊不知还有哈佛结构这种。哈佛结构了解下来具有更高的表现性能，但是它比冯氏结构要复杂。以后的计算机说不定都要改成哈弗结构（单片机使用哈佛结构），也或许又有其他更优秀的结构，未来谁好说呢，未来的孩子说不定不会使用鼠标这种东西。言归正传，下面分享一下冯氏结构，哈佛结构的相关知识。 存储程序的概念早先的计算机是没有存储程序的概念，计算机开启的">
+<meta name="keywords" content="计算机组成原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冯氏结构，哈佛结构的一些思考">
+<meta property="og:url" content="https://andy20160606.github.io/2018/03/07/冯氏结构，哈佛结构的一些思考/index.html">
+<meta property="og:site_name" content="Andy&#39;s blog">
+<meta property="og:description" content="在学习计算机组成原理之前，我一直以为计算机系统结构都是冯氏结构，殊不知还有哈佛结构这种。哈佛结构了解下来具有更高的表现性能，但是它比冯氏结构要复杂。以后的计算机说不定都要改成哈弗结构（单片机使用哈佛结构），也或许又有其他更优秀的结构，未来谁好说呢，未来的孩子说不定不会使用鼠标这种东西。言归正传，下面分享一下冯氏结构，哈佛结构的相关知识。 存储程序的概念早先的计算机是没有存储程序的概念，计算机开启的">
+<meta property="og:image" content="https://andy20160606.github.io/img/2018030802.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2018030801.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2018030803.png">
+<meta property="og:updated_time" content="2018-03-08T13:17:38.138Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="冯氏结构，哈佛结构的一些思考">
+<meta name="twitter:description" content="在学习计算机组成原理之前，我一直以为计算机系统结构都是冯氏结构，殊不知还有哈佛结构这种。哈佛结构了解下来具有更高的表现性能，但是它比冯氏结构要复杂。以后的计算机说不定都要改成哈弗结构（单片机使用哈佛结构），也或许又有其他更优秀的结构，未来谁好说呢，未来的孩子说不定不会使用鼠标这种东西。言归正传，下面分享一下冯氏结构，哈佛结构的相关知识。 存储程序的概念早先的计算机是没有存储程序的概念，计算机开启的">
+<meta name="twitter:image" content="https://andy20160606.github.io/img/2018030802.png">
+<meta name="twitter:creator" content="@andy20160606">
+
+    
+    
+    <link rel="icon" href="/img/favicon1.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="Andy&#39;s blog" title="Andy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Andy&#39;s blog">Andy&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">归档 | Archives</a></li>
+					
+						<li><a href="/about">简介 | About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:andy20160606.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+    <h1 itemprop="name">
+        
+        <a href="/ 2018/03/07/冯氏结构，哈佛结构的一些思考/" title="冯氏结构，哈佛结构的一些思考" itemprop="url">冯氏结构，哈佛结构的一些思考</a>
+        
+    </h1>
+    <p class="article-author">By
+        
+        <a href="/about" title="Andy" target="_blank"
+           itemprop="author">Andy</a>
+        
+    <p class="article-time">
+        <span id="busuanzi_container_page_pv">
+    总阅读<span id="busuanzi_value_page_pv"></span>次
+</span>
+        <time datetime="2018-03-07T12:48:50.723Z"
+              itemprop="datePublished"> Published 2018-03-07</time>
+
+    </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#存储程序的概念"><span class="toc-number">1.</span> <span class="toc-text">存储程序的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#冯氏结构"><span class="toc-number">2.</span> <span class="toc-text">冯氏结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈佛结构"><span class="toc-number">3.</span> <span class="toc-text">哈佛结构</span></a></li></ol>
+		
+		</div>
+		
+		<p>在学习计算机组成原理之前，我一直以为计算机系统结构都是冯氏结构，殊不知还有哈佛结构这种。哈佛结构了解下来具有更高的表现性能，但是它比冯氏结构要复杂。以后的计算机说不定都要改成哈弗结构（单片机使用哈佛结构），也或许又有其他更优秀的结构，未来谁好说呢，未来的孩子说不定不会使用鼠标这种东西。言归正传，下面分享一下冯氏结构，哈佛结构的相关知识。</p>
+<h2 id="存储程序的概念"><a href="#存储程序的概念" class="headerlink" title="存储程序的概念"></a>存储程序的概念</h2><p>早先的计算机是没有存储程序的概念，计算机开启的时候，再进行程序的编写，这样一段程序的运行是需要耗费大量编写时间然后才能运行。所以冯诺依曼提出了存储程序的概念，该概念是这样的：“将根据特定问题编写的程序存放在计算机存储器中，然后按存储器中的存储程序的首地址执行程序的第一条指令，以后就按照该程序的规定顺序执行其他指令，直至程序结束执行。”这样就会节省程序编写的时间从而提高程序执行的效率。</p>
+<h2 id="冯氏结构"><a href="#冯氏结构" class="headerlink" title="冯氏结构"></a>冯氏结构</h2><p>冯氏结构也称冯·诺伊曼模型（Von Neumann model）或普林斯顿结构（Princeton architecture），是一种将程序指令存储器和数据存储器<code>合并</code>在一起的存储结构。指令存储器和数据存储器是属于内存这种计算机硬件的两个部分。。冯氏结构的处理器使用同一个存储器，经由同一个总线传输，在总线传输中一次只能通过一条指令或一条数据。</p>
+<p>冯氏结构<code>存储器设计</code>图：</p>
+<p><img src="/img/2018030802.png" alt="Alt text"></p>
+<p>举个加法运算的程序例子  a + b -c = ?</p>
+<p><img src="/img/2018030801.png" alt="Alt text"></p>
+<p>计算机的控制器将从控制指令逐条执行，最终得到正确结果，步骤如下<br>①  执行读取指令，从主存中005号地址取出数a<br>②  执行加法指令，将累加寄存器中的内容a与主存006号地址取出的b一起送到Alu中想家，a+b的结果保存到累加寄存器中<br>③  执行减法指令，将累加寄存器中a+b的值与主存007号地址取出的c送到Alu中相间，结果a+b-c保存在累加寄存器中<br>④  执行存储指令，将累加寄存器中a+b-c的值存储到主存008号地址中<br>⑤  执行停止命令，计算机停止工作</p>
+<h2 id="哈佛结构"><a href="#哈佛结构" class="headerlink" title="哈佛结构"></a>哈佛结构</h2><p>哈佛架构（英语：Harvard architecture）是一种将程序指令储存和数据储存<code>分开</code>的存储器结构(Split Cache)。中央处理器首先到程序指令储存器中读取程序指令内容，解码后得到数据地址，再到相应的数据储存器中读取数据，并进行下一步的操作（通常是执行）。程序指令储存和数据储存分开，数据和指令的储存可以同时进行。</p>
+<p>哈佛结构<code>存储器设计图</code>:<br><img src="/img/2018030803.png" alt="Alt text"></p>
+<p>目前使用哈佛架构的中央处理器和微控制器有很多，Microchip公司的PIC系列芯片，还有摩托罗拉公司的MC68系列、Zilog公司的Z8系列、Atmel公司的AVR系列和安谋公司的ARM9、ARM10和ARM11。</p>
+  
+	</div>
+        
+		<!-- css -->
+		<style type="text/css">
+			.center {
+				text-align: center;
+			}
+			.hidden {
+				display: none;
+			}
+			.donate_bar a.btn_donate{
+				display: inline-block;
+				width: 82px;
+				height: 82px;
+				background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+				_background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+			<!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+			因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+			为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+			嵌入其它博客时不一定要它们。 -->
+				-webkit-transition: background 0s;
+				-moz-transition: background 0s;
+				-o-transition: background 0s;
+				-ms-transition: background 0s;
+				transition: background 0s;
+			<!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+			}
+
+			.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+			.donate_bar .donate_txt {
+				display: block;
+				color: #9d9d9d;
+				font: 14px/2 "Microsoft Yahei";
+			}
+			.bold{ font-weight: bold; }
+		</style>
+		<!-- /css -->
+
+		<!-- Donate Module -->
+		<div id="donate_module">
+
+			<!-- btn_donate & tips -->
+			<div id="donate_board" class="donate_bar center">
+				<br>
+				------------------------------------------------------------------------------------------------------------------------------
+				<br>
+				<a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+				<span class="donate_txt">
+			打赏我的人，运气都不会太差~
+		</span>
+
+
+			</div>
+			<!-- /btn_donate & tips -->
+
+			<!-- donate guide -->
+
+			<div id="donate_guide" class="donate_bar center hidden">
+				<br>
+				------------------------------------------------------------------------------------------------------------------------------
+				<br>
+                
+				<div width="100%" align="center"><div name="dashmain" id="dash-main-id-87895f" class="dash-main-3 87895f-0.99"></div></div>
+				<script type="text/javascript" charset="utf-8" src="https://andy20160606.github.io/js/ds.js"></script>
+                
+
+				<a href="https://andy20160606.github.io/img/wechatPay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+					<img src="https://andy20160606.github.io/img/wechatPay.png" title="微信打赏 Donate" height="190px" width="auto"/>
+				</a>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<a href="https://andy20160606.github.io/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+					<img src="https://andy20160606.github.io/img/alipay.png" title="支付宝打赏 Donate" height="190px" width="auto"/>
+				</a>
+
+				<span class="donate_txt">
+			打赏我的人，运气都不会太差~
+		</span>
+
+			</div>
+			<!-- /donate guide -->
+
+			<!-- donate script -->
+			<script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                    $('#donate_board').addClass('hidden');
+                    $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                    $('#donate').submit();
+                }
+
+                var original_window_onload = window.onload;
+                window.onload = function () {
+                    if (original_window_onload) {
+                        original_window_onload();
+                    }
+                    document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+			</script>
+			<!-- /donate script -->
+		</div>
+		<!-- /Donate Module -->
+        
+
+
+
+
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/计算机组成原理/">计算机组成原理<span class="article-category-count">1</span></a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/计算机组成原理/">计算机组成原理</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://andy20160606.github.io/2018/03/07/冯氏结构，哈佛结构的一些思考/" data-title="冯氏结构，哈佛结构的一些思考 | Andy&#39;s blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2018/03/03/利用php+mysql+wordpress快速建站/"  title="利用php + mysql + wordpress 快速建站">
+ <strong>下一篇：</strong><br/> 
+ <span>利用php + mysql + wordpress 快速建站
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#存储程序的概念"><span class="toc-number">1.</span> <span class="toc-text">存储程序的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#冯氏结构"><span class="toc-number">2.</span> <span class="toc-text">冯氏结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈佛结构"><span class="toc-number">3.</span> <span class="toc-text">哈佛结构</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives"> 归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/macos/" title="macos">macos<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/php/" title="php">php<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机组成原理/" title="计算机组成原理">计算机组成原理<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活-流水账/" title="生活 流水账">生活 流水账<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/macos/" title="macos">macos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机组成原理/" title="计算机组成原理">计算机组成原理<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归/" title="递归">递归<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://www.google.com" target="_blank" title="GOOGLE">GOOGLE</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.baidu.com" target="_blank" title="百   度">百   度</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://sina.com.cn" target="_blank" title="新   浪">新   浪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ztianzeng.com/" target="_blank" title="天增博客">天增博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+    
+    <div class="line">
+        <span></span>
+        <div class="author"></div>
+    </div>
+    
+    
+    <section class="info">
+        <p> hi , i&#39;m Andy. <br/>
+            This is my blog,believe it or not.</p>
+    </section>
+    
+    <div class="social-font" class="clearfix">
+        
+        
+        <a href="https://github.com/andy20160606" target="_blank" class="icon-github" title="github"></a>
+        
+        
+        
+        <a href="https://twitter.com/andy20160606" target="_blank" class="icon-twitter"
+           title="twitter"></a>
+        
+        
+        
+        
+        
+        
+        
+        <a href="mailto:andy20160606@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+        
+    </div>
+    
+    
+
+    <p class="copyright">
+        Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a
+                href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a>
+        © 2018
+        
+        <a href="/about" target="_blank" title="Andy">Andy</a>
+        
+        <span id="busuanzi_container_site_pv">
+    &nbsp;&nbsp;总访问数:&nbsp;<span id="busuanzi_value_site_pv"></span>
+</span>
+        <!--<span id="busuanzi_container_site_uv">-->
+  <!--&nbsp;&nbsp;当前访问.<span id="busuanzi_value_site_uv"></span>-->
+</span>
+
+    </p>
+
+
+</div>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script></footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'andy20160606-github-io';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?bdeb910dc144bf461feb0cf549238144";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

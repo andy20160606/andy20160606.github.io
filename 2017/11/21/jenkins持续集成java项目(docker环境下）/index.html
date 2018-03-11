@@ -1,0 +1,785 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>jenkins持续集成java项目(docker环境下） | Andy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Andy">
+    
+
+    
+    <meta name="description" content="jenkins 介绍   Jenkins是开源自动化服务器，Jenkins提供了数百个插件来支持构建，部署和自动化任何项目，Jenkins主页   比如java项目自动构建会通过github上面的代码是否发生改变进行自动构建。 本文的主旨   对jenkins 简易入门，通过jenkins对java项目进行持续集成 环境准备 1.  docker环境（本文使用centos7下的docker环境）">
+<meta name="keywords" content="docker,jenkins,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins持续集成java项目(docker环境下）">
+<meta property="og:url" content="https://andy20160606.github.io/2017/11/21/jenkins持续集成java项目(docker环境下）/index.html">
+<meta property="og:site_name" content="Andy&#39;s blog">
+<meta property="og:description" content="jenkins 介绍   Jenkins是开源自动化服务器，Jenkins提供了数百个插件来支持构建，部署和自动化任何项目，Jenkins主页   比如java项目自动构建会通过github上面的代码是否发生改变进行自动构建。 本文的主旨   对jenkins 简易入门，通过jenkins对java项目进行持续集成 环境准备 1.  docker环境（本文使用centos7下的docker环境）">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112101.jpg">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112102.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112103.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112104.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112105.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112108.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112109.png">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017112110.png">
+<meta property="og:updated_time" content="2017-11-21T09:45:25.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jenkins持续集成java项目(docker环境下）">
+<meta name="twitter:description" content="jenkins 介绍   Jenkins是开源自动化服务器，Jenkins提供了数百个插件来支持构建，部署和自动化任何项目，Jenkins主页   比如java项目自动构建会通过github上面的代码是否发生改变进行自动构建。 本文的主旨   对jenkins 简易入门，通过jenkins对java项目进行持续集成 环境准备 1.  docker环境（本文使用centos7下的docker环境）">
+<meta name="twitter:image" content="https://andy20160606.github.io/img/2017112101.jpg">
+<meta name="twitter:creator" content="@andy20160606">
+
+    
+    
+    <link rel="icon" href="/img/favicon1.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="Andy&#39;s blog" title="Andy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Andy&#39;s blog">Andy&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">归档 | Archives</a></li>
+					
+						<li><a href="/about">简介 | About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:andy20160606.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+    <h1 itemprop="name">
+        
+        <a href="/ 2017/11/21/jenkins持续集成java项目(docker环境下）/" title="jenkins持续集成java项目(docker环境下）" itemprop="url">jenkins持续集成java项目(docker环境下）</a>
+        
+    </h1>
+    <p class="article-author">By
+        
+        <a href="/about" title="Andy" target="_blank"
+           itemprop="author">Andy</a>
+        
+    <p class="article-time">
+        <span id="busuanzi_container_page_pv">
+    总阅读<span id="busuanzi_value_page_pv"></span>次
+</span>
+        <time datetime="2017-11-21T07:49:34.361Z"
+              itemprop="datePublished"> Published 2017-11-21</time>
+
+    </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jenkins-介绍"><span class="toc-number">1.</span> <span class="toc-text">jenkins 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本文的主旨"><span class="toc-number">2.</span> <span class="toc-text">本文的主旨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境准备"><span class="toc-number">3.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战动手"><span class="toc-number">4.</span> <span class="toc-text">实战动手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过docker安装jenkins服务器"><span class="toc-number">4.1.</span> <span class="toc-text">1.    通过docker安装jenkins服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-进入jenkins-Web管理页面"><span class="toc-number">4.2.</span> <span class="toc-text">2.    进入jenkins Web管理页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-fork-Github上面的java项目"><span class="toc-number">4.3.</span> <span class="toc-text">3. fork Github上面的java项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-创建一个Pipeline项目在jenkins中"><span class="toc-number">4.4.</span> <span class="toc-text">4. 创建一个Pipeline项目在jenkins中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-配置该项目"><span class="toc-number">4.5.</span> <span class="toc-text">5. 配置该项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-对jenkinsfile-进行修改"><span class="toc-number">4.6.</span> <span class="toc-text">6. 对jenkinsfile 进行修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-进行构建"><span class="toc-number">4.7.</span> <span class="toc-text">7. 进行构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-修改本地simple-java-maven-app项目，让jenkins进行持续集成"><span class="toc-number">4.8.</span> <span class="toc-text">8. 修改本地simple-java-maven-app项目，让jenkins进行持续集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些建议"><span class="toc-number">4.9.</span> <span class="toc-text">一些建议</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="jenkins-介绍"><a href="#jenkins-介绍" class="headerlink" title="jenkins 介绍"></a>jenkins 介绍</h2><p>   Jenkins是开源自动化服务器，Jenkins提供了数百个插件来支持构建，部署和自动化任何项目，<a href="https://jenkins.io/" target="_blank" rel="external">Jenkins主页</a><br>   比如java项目自动构建会通过github上面的代码是否发生改变进行自动构建。</p>
+<h2 id="本文的主旨"><a href="#本文的主旨" class="headerlink" title="本文的主旨"></a>本文的主旨</h2><p>   对jenkins 简易入门，通过jenkins对java项目进行持续集成</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p> <em>1. </em> docker环境（本文使用centos7下的docker环境）</p>
+<h2 id="实战动手"><a href="#实战动手" class="headerlink" title="实战动手"></a>实战动手</h2><h3 id="1-通过docker安装jenkins服务器"><a href="#1-通过docker安装jenkins服务器" class="headerlink" title="1.    通过docker安装jenkins服务器"></a><em>1.</em>    通过docker安装jenkins服务器</h3><pre><code>docker run \
+  --rm \
+  -u root \
+  -p 8080:8080 \
+  -v jenkins-data:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v &quot;$HOME&quot;:/home \
+  jenkinsci/blueocean
+</code></pre><p> <code>执行命令后docker通过网络将jenkins服务器下载下来并且启动，并且将8080端口映射出来</code></p>
+<h3 id="2-进入jenkins-Web管理页面"><a href="#2-进入jenkins-Web管理页面" class="headerlink" title="2.    进入jenkins Web管理页面"></a><em>2.</em>    进入jenkins Web管理页面</h3><p> <img src="/img/2017112101.jpg" alt="Alt text"></p>
+<p><code>密码在log有打印，请参考自己docker容器中log输出 如下图</code></p>
+<p>   <img src="/img/2017112102.png" alt="Alt text"></p>
+<h3 id="3-fork-Github上面的java项目"><a href="#3-fork-Github上面的java项目" class="headerlink" title="3. fork Github上面的java项目"></a><em>3.</em> fork Github上面的java项目</h3><p><a href="https://github.com/gilesgas/simple-java-maven-app" target="_blank" rel="external">simple-java-maven-app</a></p>
+<pre><code>这个程序简单的输出helloworld
+</code></pre><h3 id="4-创建一个Pipeline项目在jenkins中"><a href="#4-创建一个Pipeline项目在jenkins中" class="headerlink" title="4. 创建一个Pipeline项目在jenkins中"></a><em>4.</em> 创建一个Pipeline项目在jenkins中</h3><p><img src="/img/2017112103.png" alt="Alt text"></p>
+<h3 id="5-配置该项目"><a href="#5-配置该项目" class="headerlink" title="5. 配置该项目"></a><em>5.</em> 配置该项目</h3><p><img src="/img/2017112104.png" alt="Alt text"><br><img src="/img/2017112105.png" alt="Alt text"></p>
+<p><code>上面椭圆标记的地方改成自己github该项目的地址</code></p>
+<h3 id="6-对jenkinsfile-进行修改"><a href="#6-对jenkinsfile-进行修改" class="headerlink" title="6. 对jenkinsfile 进行修改"></a><em>6.</em> 对jenkinsfile 进行修改</h3><pre><code>将simple-java-maven-app项目从github上面pull下来并且放到开发工具中（我用的idea）
+
+   simple-java-maven-app文件路径信息
+       simple-java-maven-app/
+       ├── jenkins/
+       │   ├── script/
+       │          └── deliver.sh
+       │   └── Jenkinsfile
+       ├── src/    src下面的java文件进行省略
+       └── pom.xml   
+
+       Jenkinsfile是初始化部署项目必须的文件，里面配置了运行环境，编译环境，测试环境等
+       deliver.sh 主要执行 java -jar 命令 来执行jar文件
+</code></pre><p><code>我们要将Jenkinsfile 移动到  simple-java-maven-app的根路径下面</code>  </p>
+<pre><code>   最后文件路径变为
+   simple-java-maven-app/
+               ├── jenkins/
+               │   ├── script/
+               │          └── deliver.sh
+               ├── src/    src下面的java文件进行省略
+               └── pom.xml
+               └── Jenkinsfile
+
+最后push该项目到github
+</code></pre><h3 id="7-进行构建"><a href="#7-进行构建" class="headerlink" title="7. 进行构建"></a><em>7.</em> 进行构建</h3><pre><code>1.回到jenkins主页点击 Open Blue Ocean按钮
+2.点开刚刚创建的simple-java-maven-app项目
+3. 点击run 然后你会看到如下界面
+</code></pre><p><img src="/img/2017112108.png" alt="Alt text"></p>
+<pre><code>4. 自动部署成功如下图
+</code></pre><p><img src="/img/2017112109.png" alt="Alt text"></p>
+<h3 id="8-修改本地simple-java-maven-app项目，让jenkins进行持续集成"><a href="#8-修改本地simple-java-maven-app项目，让jenkins进行持续集成" class="headerlink" title="8. 修改本地simple-java-maven-app项目，让jenkins进行持续集成"></a><em>8.</em> 修改本地simple-java-maven-app项目，让jenkins进行持续集成</h3><pre><code>原本只打印helloword，现在我们让他多打印一些日志（请自行修改该项目中main方法中的打印语句），将它同步的github上面，
+jenkins持续集成的目的就是不再需要人手动去
+重新部署项目了，这个时候，我们需要去修改simple-java-maven-app在jenkins中的配置，让jenkins每几分钟帮我们去监听一些
+github上该项目是否发生了提交，如果发生了提交那么jenkins就会重新去部署该项目。  修改如下，
+</code></pre><p><code>加入以下语句 */1 * * * *， 让他1分钟去检测一次。</code><br><img src="/img/2017112110.png" alt="Alt text"></p>
+<pre><code>接下来耐心等待，然后你会发现刚才同步的github上面的内容被重新部署了，然后打印的内容为你刚才更改过的内容
+</code></pre><h3 id="一些建议"><a href="#一些建议" class="headerlink" title="一些建议"></a>一些建议</h3><pre><code>1. docker中下载东西总是出现网络错误
+          解决： 在一次下载完成需要的镜像的时候，可以把镜像同步到阿里云的docker中，以后使用阿里云的镜像
+</code></pre>  
+	</div>
+        
+		<!-- css -->
+		<style type="text/css">
+			.center {
+				text-align: center;
+			}
+			.hidden {
+				display: none;
+			}
+			.donate_bar a.btn_donate{
+				display: inline-block;
+				width: 82px;
+				height: 82px;
+				background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+				_background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+			<!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+			因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+			为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+			嵌入其它博客时不一定要它们。 -->
+				-webkit-transition: background 0s;
+				-moz-transition: background 0s;
+				-o-transition: background 0s;
+				-ms-transition: background 0s;
+				transition: background 0s;
+			<!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+			}
+
+			.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+			.donate_bar .donate_txt {
+				display: block;
+				color: #9d9d9d;
+				font: 14px/2 "Microsoft Yahei";
+			}
+			.bold{ font-weight: bold; }
+		</style>
+		<!-- /css -->
+
+		<!-- Donate Module -->
+		<div id="donate_module">
+
+			<!-- btn_donate & tips -->
+			<div id="donate_board" class="donate_bar center">
+				<br>
+				------------------------------------------------------------------------------------------------------------------------------
+				<br>
+				<a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+				<span class="donate_txt">
+			打赏我的人，运气都不会太差~
+		</span>
+
+
+			</div>
+			<!-- /btn_donate & tips -->
+
+			<!-- donate guide -->
+
+			<div id="donate_guide" class="donate_bar center hidden">
+				<br>
+				------------------------------------------------------------------------------------------------------------------------------
+				<br>
+                
+				<div width="100%" align="center"><div name="dashmain" id="dash-main-id-87895f" class="dash-main-3 87895f-0.99"></div></div>
+				<script type="text/javascript" charset="utf-8" src="https://andy20160606.github.io/js/ds.js"></script>
+                
+
+				<a href="https://andy20160606.github.io/img/wechatPay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+					<img src="https://andy20160606.github.io/img/wechatPay.png" title="微信打赏 Donate" height="190px" width="auto"/>
+				</a>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<a href="https://andy20160606.github.io/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+					<img src="https://andy20160606.github.io/img/alipay.png" title="支付宝打赏 Donate" height="190px" width="auto"/>
+				</a>
+
+				<span class="donate_txt">
+			打赏我的人，运气都不会太差~
+		</span>
+
+			</div>
+			<!-- /donate guide -->
+
+			<!-- donate script -->
+			<script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                    $('#donate_board').addClass('hidden');
+                    $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                    $('#donate').submit();
+                }
+
+                var original_window_onload = window.onload;
+                window.onload = function () {
+                    if (original_window_onload) {
+                        original_window_onload();
+                    }
+                    document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+			</script>
+			<!-- /donate script -->
+		</div>
+		<!-- /Donate Module -->
+        
+
+
+
+
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/jenkins/">jenkins<span class="article-category-count">1</span></a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/docker/">docker</a><a href="/tags/jenkins/">jenkins</a><a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://andy20160606.github.io/2017/11/21/jenkins持续集成java项目(docker环境下）/" data-title="jenkins持续集成java项目(docker环境下） | Andy&#39;s blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/11/27/docker部署JavaWeb项目(springboot + mysql)/" title="docker部署springboot项目(web + mysql)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  docker部署springboot项目(web + mysql)</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/11/13/windows环境下用虚拟机安装MacOS/"  title="windows环境下用虚拟机安装MacOS">
+ <strong>下一篇：</strong><br/> 
+ <span>windows环境下用虚拟机安装MacOS
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jenkins-介绍"><span class="toc-number">1.</span> <span class="toc-text">jenkins 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本文的主旨"><span class="toc-number">2.</span> <span class="toc-text">本文的主旨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境准备"><span class="toc-number">3.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战动手"><span class="toc-number">4.</span> <span class="toc-text">实战动手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过docker安装jenkins服务器"><span class="toc-number">4.1.</span> <span class="toc-text">1.    通过docker安装jenkins服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-进入jenkins-Web管理页面"><span class="toc-number">4.2.</span> <span class="toc-text">2.    进入jenkins Web管理页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-fork-Github上面的java项目"><span class="toc-number">4.3.</span> <span class="toc-text">3. fork Github上面的java项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-创建一个Pipeline项目在jenkins中"><span class="toc-number">4.4.</span> <span class="toc-text">4. 创建一个Pipeline项目在jenkins中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-配置该项目"><span class="toc-number">4.5.</span> <span class="toc-text">5. 配置该项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-对jenkinsfile-进行修改"><span class="toc-number">4.6.</span> <span class="toc-text">6. 对jenkinsfile 进行修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-进行构建"><span class="toc-number">4.7.</span> <span class="toc-text">7. 进行构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-修改本地simple-java-maven-app项目，让jenkins进行持续集成"><span class="toc-number">4.8.</span> <span class="toc-text">8. 修改本地simple-java-maven-app项目，让jenkins进行持续集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些建议"><span class="toc-number">4.9.</span> <span class="toc-text">一些建议</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives"> 归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/macos/" title="macos">macos<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/php/" title="php">php<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机组成原理/" title="计算机组成原理">计算机组成原理<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活-流水账/" title="生活 流水账">生活 流水账<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/macos/" title="macos">macos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机组成原理/" title="计算机组成原理">计算机组成原理<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归/" title="递归">递归<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://www.google.com" target="_blank" title="GOOGLE">GOOGLE</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.baidu.com" target="_blank" title="百   度">百   度</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://sina.com.cn" target="_blank" title="新   浪">新   浪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ztianzeng.com/" target="_blank" title="天增博客">天增博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+    
+    <div class="line">
+        <span></span>
+        <div class="author"></div>
+    </div>
+    
+    
+    <section class="info">
+        <p> hi , i&#39;m Andy. <br/>
+            This is my blog,believe it or not.</p>
+    </section>
+    
+    <div class="social-font" class="clearfix">
+        
+        
+        <a href="https://github.com/andy20160606" target="_blank" class="icon-github" title="github"></a>
+        
+        
+        
+        <a href="https://twitter.com/andy20160606" target="_blank" class="icon-twitter"
+           title="twitter"></a>
+        
+        
+        
+        
+        
+        
+        
+        <a href="mailto:andy20160606@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+        
+    </div>
+    
+    
+
+    <p class="copyright">
+        Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a
+                href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a>
+        © 2018
+        
+        <a href="/about" target="_blank" title="Andy">Andy</a>
+        
+        <span id="busuanzi_container_site_pv">
+    &nbsp;&nbsp;总访问数:&nbsp;<span id="busuanzi_value_site_pv"></span>
+</span>
+        <!--<span id="busuanzi_container_site_uv">-->
+  <!--&nbsp;&nbsp;当前访问.<span id="busuanzi_value_site_uv"></span>-->
+</span>
+
+    </p>
+
+
+</div>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script></footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'andy20160606-github-io';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?bdeb910dc144bf461feb0cf549238144";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,755 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>浅谈python中，一切皆对象,类比java | Andy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Andy">
+    
+
+    
+    <meta name="description" content="引子   前些日子机缘蹭了几次python课，书中有这么一句话’Python从设计之初就是一门面向对象的语言，它有一个重要的概念，即一切皆对   象。’简单谈一谈python中对象的创建和引用关系 对象的创建和引用像大多数语言一样给一个变量（在python中都叫对象）赋值，那么就会 内存中开辟一块空间，在python中该对象的引用会指向该内 存空间  例如：  a = 5     //   内存中">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈python中，一切皆对象,类比java">
+<meta property="og:url" content="https://andy20160606.github.io/2017/11/09/浅谈python中，一切皆对象,类比java/index.html">
+<meta property="og:site_name" content="Andy&#39;s blog">
+<meta property="og:description" content="引子   前些日子机缘蹭了几次python课，书中有这么一句话’Python从设计之初就是一门面向对象的语言，它有一个重要的概念，即一切皆对   象。’简单谈一谈python中对象的创建和引用关系 对象的创建和引用像大多数语言一样给一个变量（在python中都叫对象）赋值，那么就会 内存中开辟一块空间，在python中该对象的引用会指向该内 存空间  例如：  a = 5     //   内存中">
+<meta property="og:image" content="https://andy20160606.github.io/img/2017110901.png">
+<meta property="og:updated_time" content="2017-11-09T10:47:44.493Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈python中，一切皆对象,类比java">
+<meta name="twitter:description" content="引子   前些日子机缘蹭了几次python课，书中有这么一句话’Python从设计之初就是一门面向对象的语言，它有一个重要的概念，即一切皆对   象。’简单谈一谈python中对象的创建和引用关系 对象的创建和引用像大多数语言一样给一个变量（在python中都叫对象）赋值，那么就会 内存中开辟一块空间，在python中该对象的引用会指向该内 存空间  例如：  a = 5     //   内存中">
+<meta name="twitter:image" content="https://andy20160606.github.io/img/2017110901.png">
+<meta name="twitter:creator" content="@andy20160606">
+
+    
+    
+    <link rel="icon" href="/img/favicon1.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="Andy&#39;s blog" title="Andy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Andy&#39;s blog">Andy&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">归档 | Archives</a></li>
+					
+						<li><a href="/about">简介 | About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:andy20160606.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+    <h1 itemprop="name">
+        
+        <a href="/ 2017/11/09/浅谈python中，一切皆对象,类比java/" title="浅谈python中，一切皆对象,类比java" itemprop="url">浅谈python中，一切皆对象,类比java</a>
+        
+    </h1>
+    <p class="article-author">By
+        
+        <a href="/about" title="Andy" target="_blank"
+           itemprop="author">Andy</a>
+        
+    <p class="article-time">
+        <span id="busuanzi_container_page_pv">
+    总阅读<span id="busuanzi_value_page_pv"></span>次
+</span>
+        <time datetime="2017-11-09T09:45:27.885Z"
+              itemprop="datePublished"> Published 2017-11-09</time>
+
+    </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引子"><span class="toc-number">1.</span> <span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象的创建和引用"><span class="toc-number">2.</span> <span class="toc-text">对象的创建和引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象引用的比较"><span class="toc-number">3.</span> <span class="toc-text">对象引用的比较</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对于基本类型-int-string-char-python中虽然没有这些，但是这里写这些好理解"><span class="toc-number">3.1.</span> <span class="toc-text">对于基本类型 int ,string ,char (python中虽然没有这些，但是这里写这些好理解)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对于非基本类型-（list"><span class="toc-number">3.2.</span> <span class="toc-text">对于非基本类型 （list)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>   前些日子机缘蹭了几次python课，书中有这么一句话’Python从设计之初就是一门面向对象的语言，它有一个重要的概念，即一切皆对<br>   象。’简单谈一谈python中对象的创建和引用关系</p>
+<h2 id="对象的创建和引用"><a href="#对象的创建和引用" class="headerlink" title="对象的创建和引用"></a>对象的创建和引用</h2><pre><code>像大多数语言一样给一个变量（在python中都叫对象）赋值，那么就会 内存中开辟一块空间，在python中该对象的引用会指向该内
+存空间
+
+例如：  a = 5     //   内存中开辟一块空间值为5（创建） a对象指向5这个值代表的内存空间
+</code></pre><h2 id="对象引用的比较"><a href="#对象引用的比较" class="headerlink" title="对象引用的比较"></a>对象引用的比较</h2><h3 id="对于基本类型-int-string-char-python中虽然没有这些，但是这里写这些好理解"><a href="#对于基本类型-int-string-char-python中虽然没有这些，但是这里写这些好理解" class="headerlink" title="对于基本类型 int ,string ,char (python中虽然没有这些，但是这里写这些好理解)"></a>对于基本类型 int ,string ,char (python中虽然没有这些，但是这里写这些好理解)</h3><pre><code>执行如下代码
+
+  a = 5
+  b = 5 
+  a is b
+
+  &gt;&gt; True  //按照理解是开辟了2个空间，而为什么a is b == True呢，简单基本类型python执行器发现存在5这块内存空间，
+  它就会直接将b指向5，而不是重新开辟一块内存空间，这和java中 String a = &quot;java&quot; ;String b = &quot;java&quot; ;a == b 是一个道理
+
+  既然a b 指向相同的内存空间，那么修改a的值
+  执行如下代码
+
+   a = 6 // 那么 b 会是多少？
+   b
+   &gt;&gt; 5  // 这是因为python会重新开辟一块内存空间值为6 并将a指向这块为6的内存空间，
+   而b还是指向5那块内存空间，验证如下
+   a is b
+   &gt;&gt; false //的确a,b 对象指向的内存空间已经不一样了
+</code></pre><h3 id="对于非基本类型-（list"><a href="#对于非基本类型-（list" class="headerlink" title="对于非基本类型 （list)"></a>对于非基本类型 （list)</h3><pre><code>执行如下代码
+a = {&apos;a&apos;,&apos;b&apos;}
+b = {&apos;a&apos;,&apos;b&apos;}
+a is b
+&gt;&gt; False //开辟了两块内存空间他们指向的内存地址不一样，这和java中 new关键字得到的对象是一个道理
+执行 
+a == b
+&gt;&gt; True //这是在比较他们指向内存空间的值是否一样 a和b指向内存空间的值是一样的
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre><code>根据java的观点new 出来的对象必将开辟一块新的内存空间。而python中一切皆对象的概念，在基础类型上（int，string，char）
+只能和java中String c = &quot;java&quot;; String d = &quot;java&quot;; 做相同的类比,在非基础类型上则是和String e = new String(&quot;java&quot;)
+做类比了。
+</code></pre><p><img src="/img/2017110901.png" alt="Alt text"></p>
+  
+	</div>
+        
+		<!-- css -->
+		<style type="text/css">
+			.center {
+				text-align: center;
+			}
+			.hidden {
+				display: none;
+			}
+			.donate_bar a.btn_donate{
+				display: inline-block;
+				width: 82px;
+				height: 82px;
+				background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+				_background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+			<!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+			因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+			为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+			嵌入其它博客时不一定要它们。 -->
+				-webkit-transition: background 0s;
+				-moz-transition: background 0s;
+				-o-transition: background 0s;
+				-ms-transition: background 0s;
+				transition: background 0s;
+			<!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+			}
+
+			.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+			.donate_bar .donate_txt {
+				display: block;
+				color: #9d9d9d;
+				font: 14px/2 "Microsoft Yahei";
+			}
+			.bold{ font-weight: bold; }
+		</style>
+		<!-- /css -->
+
+		<!-- Donate Module -->
+		<div id="donate_module">
+
+			<!-- btn_donate & tips -->
+			<div id="donate_board" class="donate_bar center">
+				<br>
+				------------------------------------------------------------------------------------------------------------------------------
+				<br>
+				<a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+				<span class="donate_txt">
+			打赏我的人，运气都不会太差~
+		</span>
+
+
+			</div>
+			<!-- /btn_donate & tips -->
+
+			<!-- donate guide -->
+
+			<div id="donate_guide" class="donate_bar center hidden">
+				<br>
+				------------------------------------------------------------------------------------------------------------------------------
+				<br>
+                
+				<div width="100%" align="center"><div name="dashmain" id="dash-main-id-87895f" class="dash-main-3 87895f-0.99"></div></div>
+				<script type="text/javascript" charset="utf-8" src="https://andy20160606.github.io/js/ds.js"></script>
+                
+
+				<a href="https://andy20160606.github.io/img/wechatPay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+					<img src="https://andy20160606.github.io/img/wechatPay.png" title="微信打赏 Donate" height="190px" width="auto"/>
+				</a>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<a href="https://andy20160606.github.io/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+					<img src="https://andy20160606.github.io/img/alipay.png" title="支付宝打赏 Donate" height="190px" width="auto"/>
+				</a>
+
+				<span class="donate_txt">
+			打赏我的人，运气都不会太差~
+		</span>
+
+			</div>
+			<!-- /donate guide -->
+
+			<!-- donate script -->
+			<script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                    $('#donate_board').addClass('hidden');
+                    $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                    $('#donate').submit();
+                }
+
+                var original_window_onload = window.onload;
+                window.onload = function () {
+                    if (original_window_onload) {
+                        original_window_onload();
+                    }
+                    document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+			</script>
+			<!-- /donate script -->
+		</div>
+		<!-- /Donate Module -->
+        
+
+
+
+
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/python/">python<span class="article-category-count">1</span></a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://andy20160606.github.io/2017/11/09/浅谈python中，一切皆对象,类比java/" data-title="浅谈python中，一切皆对象,类比java | Andy&#39;s blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/11/13/windows环境下用虚拟机安装MacOS/" title="windows环境下用虚拟机安装MacOS">
+  <strong>上一篇：</strong><br/>
+  <span>
+  windows环境下用虚拟机安装MacOS</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/11/08/2017年，我想说/"  title="2017年，我想说">
+ <strong>下一篇：</strong><br/> 
+ <span>2017年，我想说
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引子"><span class="toc-number">1.</span> <span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象的创建和引用"><span class="toc-number">2.</span> <span class="toc-text">对象的创建和引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象引用的比较"><span class="toc-number">3.</span> <span class="toc-text">对象引用的比较</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对于基本类型-int-string-char-python中虽然没有这些，但是这里写这些好理解"><span class="toc-number">3.1.</span> <span class="toc-text">对于基本类型 int ,string ,char (python中虽然没有这些，但是这里写这些好理解)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对于非基本类型-（list"><span class="toc-number">3.2.</span> <span class="toc-text">对于非基本类型 （list)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives"> 归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/macos/" title="macos">macos<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/php/" title="php">php<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机组成原理/" title="计算机组成原理">计算机组成原理<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活-流水账/" title="生活 流水账">生活 流水账<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/macos/" title="macos">macos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机组成原理/" title="计算机组成原理">计算机组成原理<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/递归/" title="递归">递归<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://www.google.com" target="_blank" title="GOOGLE">GOOGLE</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.baidu.com" target="_blank" title="百   度">百   度</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://sina.com.cn" target="_blank" title="新   浪">新   浪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ztianzeng.com/" target="_blank" title="天增博客">天增博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+    
+    <div class="line">
+        <span></span>
+        <div class="author"></div>
+    </div>
+    
+    
+    <section class="info">
+        <p> hi , i&#39;m Andy. <br/>
+            This is my blog,believe it or not.</p>
+    </section>
+    
+    <div class="social-font" class="clearfix">
+        
+        
+        <a href="https://github.com/andy20160606" target="_blank" class="icon-github" title="github"></a>
+        
+        
+        
+        <a href="https://twitter.com/andy20160606" target="_blank" class="icon-twitter"
+           title="twitter"></a>
+        
+        
+        
+        
+        
+        
+        
+        <a href="mailto:andy20160606@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+        
+    </div>
+    
+    
+
+    <p class="copyright">
+        Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a
+                href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a>
+        © 2018
+        
+        <a href="/about" target="_blank" title="Andy">Andy</a>
+        
+        <span id="busuanzi_container_site_pv">
+    &nbsp;&nbsp;总访问数:&nbsp;<span id="busuanzi_value_site_pv"></span>
+</span>
+        <!--<span id="busuanzi_container_site_uv">-->
+  <!--&nbsp;&nbsp;当前访问.<span id="busuanzi_value_site_uv"></span>-->
+</span>
+
+    </p>
+
+
+</div>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script></footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'andy20160606-github-io';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?bdeb910dc144bf461feb0cf549238144";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
