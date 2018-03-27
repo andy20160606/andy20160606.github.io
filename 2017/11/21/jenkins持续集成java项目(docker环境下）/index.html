@@ -12,7 +12,7 @@
 
     
     <meta name="description" content="jenkins 介绍   Jenkins是开源自动化服务器，Jenkins提供了数百个插件来支持构建，部署和自动化任何项目，Jenkins主页   比如java项目自动构建会通过github上面的代码是否发生改变进行自动构建。 本文的主旨   对jenkins 简易入门，通过jenkins对java项目进行持续集成 环境准备 1.  docker环境（本文使用centos7下的docker环境）">
-<meta name="keywords" content="docker,jenkins,java">
+<meta name="keywords" content="jenkins,java,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="jenkins持续集成java项目(docker环境下）">
 <meta property="og:url" content="https://andy20160606.github.io/2017/11/21/jenkins持续集成java项目(docker环境下）/index.html">
@@ -57,7 +57,7 @@
 				<h1 class="site-name"><a href="/" title="Andy&#39;s blog">Andy&#39;s blog</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -73,7 +73,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:andy20160606.github.io">
 					</form>
 					
@@ -102,14 +102,14 @@
     总阅读<span id="busuanzi_value_page_pv"></span>次
 </span>
         <time datetime="2017-11-21T07:49:34.361Z"
-              itemprop="datePublished"> Published 2017-11-21</time>
+              itemprop="datePublished"> 发表于 2017-11-21</time>
 
     </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jenkins-介绍"><span class="toc-number">1.</span> <span class="toc-text">jenkins 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本文的主旨"><span class="toc-number">2.</span> <span class="toc-text">本文的主旨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境准备"><span class="toc-number">3.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战动手"><span class="toc-number">4.</span> <span class="toc-text">实战动手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过docker安装jenkins服务器"><span class="toc-number">4.1.</span> <span class="toc-text">1.    通过docker安装jenkins服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-进入jenkins-Web管理页面"><span class="toc-number">4.2.</span> <span class="toc-text">2.    进入jenkins Web管理页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-fork-Github上面的java项目"><span class="toc-number">4.3.</span> <span class="toc-text">3. fork Github上面的java项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-创建一个Pipeline项目在jenkins中"><span class="toc-number">4.4.</span> <span class="toc-text">4. 创建一个Pipeline项目在jenkins中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-配置该项目"><span class="toc-number">4.5.</span> <span class="toc-text">5. 配置该项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-对jenkinsfile-进行修改"><span class="toc-number">4.6.</span> <span class="toc-text">6. 对jenkinsfile 进行修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-进行构建"><span class="toc-number">4.7.</span> <span class="toc-text">7. 进行构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-修改本地simple-java-maven-app项目，让jenkins进行持续集成"><span class="toc-number">4.8.</span> <span class="toc-text">8. 修改本地simple-java-maven-app项目，让jenkins进行持续集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些建议"><span class="toc-number">4.9.</span> <span class="toc-text">一些建议</span></a></li></ol></li></ol>
 		
@@ -297,7 +297,7 @@ github上该项目是否发生了提交，如果发生了提交那么jenkins就�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/docker/">docker</a><a href="/tags/jenkins/">jenkins</a><a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/jenkins/">jenkins</a><a href="/tags/java/">java</a><a href="/tags/docker/">docker</a>
   </div>
 
 </div>
@@ -348,17 +348,17 @@ github上该项目是否发生了提交，如果发生了提交那么jenkins就�
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jenkins-介绍"><span class="toc-number">1.</span> <span class="toc-text">jenkins 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本文的主旨"><span class="toc-number">2.</span> <span class="toc-text">本文的主旨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境准备"><span class="toc-number">3.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战动手"><span class="toc-number">4.</span> <span class="toc-text">实战动手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过docker安装jenkins服务器"><span class="toc-number">4.1.</span> <span class="toc-text">1.    通过docker安装jenkins服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-进入jenkins-Web管理页面"><span class="toc-number">4.2.</span> <span class="toc-text">2.    进入jenkins Web管理页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-fork-Github上面的java项目"><span class="toc-number">4.3.</span> <span class="toc-text">3. fork Github上面的java项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-创建一个Pipeline项目在jenkins中"><span class="toc-number">4.4.</span> <span class="toc-text">4. 创建一个Pipeline项目在jenkins中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-配置该项目"><span class="toc-number">4.5.</span> <span class="toc-text">5. 配置该项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-对jenkinsfile-进行修改"><span class="toc-number">4.6.</span> <span class="toc-text">6. 对jenkinsfile 进行修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-进行构建"><span class="toc-number">4.7.</span> <span class="toc-text">7. 进行构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-修改本地simple-java-maven-app项目，让jenkins进行持续集成"><span class="toc-number">4.8.</span> <span class="toc-text">8. 修改本地simple-java-maven-app项目，让jenkins进行持续集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些建议"><span class="toc-number">4.9.</span> <span class="toc-text">一些建议</span></a></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
@@ -423,6 +423,18 @@ github上该项目是否发生了提交，如果发生了提交那么jenkins就�
 			
 		
 			
+				<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活-流水账/" title="生活 流水账">生活 流水账<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
 			
 		
@@ -431,27 +443,15 @@ github上该项目是否发生了提交，如果发生了提交那么jenkins就�
 			
 		
 			
-				<li><a href="/tags/生活-流水账/" title="生活 流水账">生活 流水账<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/macos/" title="macos">macos<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/jenkins/" title="jenkins">jenkins<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+				<li><a href="/tags/macos/" title="macos">macos<sup>1</sup></a></li>
 			
 		
 			
@@ -765,7 +765,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
